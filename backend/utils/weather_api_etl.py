@@ -14,7 +14,7 @@ class WeatherApiETL:
             "units": units,
         }
 
-    def extract(self, location, forecast_type):
+    def extract(self, location:str,  forecast_type:str)->dict:
         response = get(
             url=f"{self.base_url}{forecast_type}",
             params=self.__get_params(location=location)
