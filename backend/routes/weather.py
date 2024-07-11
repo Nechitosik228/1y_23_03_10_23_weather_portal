@@ -1,10 +1,16 @@
-from .. import app
+from flask import jsonify
+
+from .. import app, etl
 
 
-@app.get("/weather/<city>/<forecast_type>") # /weather/kherson/forecast|weather=weather
-def weather(city:str, forecast_type:str="weather"):
-    data = make_weather_data(city, forecast_type)
-    return jsonify(data)
+@app.get("/weather/<location>/<forecast_type>") # /weather/kherson/forecast|weather=weather
+@app.get("/weather/<location>") # /weather/kherson/forecast|weather=weather
+def weather(location:str, forecast_type:str="weather"):
+    clear_data = etl.extract(location, forecast_type)
+    prepared_data = etl.transform(clear_data, forecast_type)
+    return jsonify(prepared_data)
+
+
 
 
 # @app.route('/get_weather')
